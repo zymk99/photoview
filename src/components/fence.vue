@@ -1,7 +1,8 @@
 <template>
   <div class="fencemain">
+    <a class="canclick" href="" target="_blank"></a>
     <ul class="mainul">
-      <li v-for="(item,index) in listvalue" v-bind:key="index" class="fencecell">
+      <li v-for="(item,index) in listvalue" v-bind:key="index" class="fencecell" @click="photoclick(item.title)">
         <img :src="item.src"/>
         <span>{{item.title}}</span>
       </li>
@@ -88,12 +89,20 @@ export default {
     choosepage:function(index){
       this.$data.currPage=index;
       this.updatePage();
+    },
+    photoclick:function(title){
+      let taga=document.getElementsByClassName('canclick')[0];
+      taga.setAttribute('href','/see?title='+title);
+      taga.click();
     }
   }
 }
 </script>
 
 <style scoped>
+  .canclick{
+    display: none;
+  }
   .fencemain{
     display: grid;
     place-items: center;
