@@ -14,7 +14,6 @@
         </li>
       </ul>
 
-
       <div class="pagelast" :class="[currPage==maxPage?'notclick':'canclick']"  @click="currPage!=maxPage &&choosepage(maxPage)">尾</div>
     </div>
   </div>
