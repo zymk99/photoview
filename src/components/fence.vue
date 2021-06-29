@@ -39,37 +39,12 @@ export default {
     photo : Array
   },
   mounted(){
-    let par={};
-    par.pageNum=15;
-    par.pageSize=1;
-    axios.post("http://localhost/rest/count/test").then(arg=>{
-      debugger
-    })
-    if(photorestdata.length==0){
-      this.$data.listvalue=this.photo;
-      this.updatePage();
-      return;
-    }
-    let tmp=photorestdata[0]
-    this.$data.maxPage=tmp.pageMax
-    let plist=tmp.list;
-    for(let i=0;i<plist.length;i++){
-      let base64=plist[i].url
-      let bytes = window.atob(base64);
-      let ab = new ArrayBuffer(bytes.length);
-      let ia = new Uint8Array(ab);
-      for (let j = 0; j < bytes.length; j++) {
-        ia[j] = bytes.charCodeAt(j);
-      }
-      plist[i].src=URL.createObjectURL(new Blob([ab]))
-      plist[i].url=""
-    }
-    this.$data.listvalue=plist
     //this.$data.listvalue.push( ... this.photo);
-    this.updatePage();
+    this.choosepage(1);
   },
   methods:{
-    updatePage:function(){                     //翻页
+    //翻页-跟新页数
+    updatePage:function(){
       let max=this.$data.viewPage;
       let v_max=this.$data.maxPage;
       let curr=this.$data.currPage;
@@ -86,10 +61,42 @@ export default {
       });
       this.$data.pagelist=num
     },
+    //翻页跟新图片
+    updatePagePhoto:function(){
+      let par={};
+      par.pageNum=this.$data.onePageNum;
+      par.pageSize=this.$data.currPage;
+      let that=this;
+      axios.post("http://localhost/photoserver/photo/getPhotoList",par).then(arg=>{
+        if(arg==null || arg.data==null || arg.data.length==0){
+          that.$data.listvalue=that.photo;
+          this.updatePage();
+          return;
+        }
+        let tmp=arg.data[0]
+        that.$data.maxPage=tmp.pageMax
+        let plist=tmp.list;
+        for(let i=0;i<plist.length;i++){
+          let base64=plist[i].url
+          let bytes = window.atob(base64);
+          let ab = new ArrayBuffer(bytes.length);
+          let ia = new Uint8Array(ab);
+          for (let j = 0; j < bytes.length; j++) {
+            ia[j] = bytes.charCodeAt(j);
+          }
+          plist[i].src=URL.createObjectURL(new Blob([ab]))
+          plist[i].url=""
+        }
+        that.$data.listvalue=plist
+        that.updatePage();
+      })
+    },
+    //点击页数
     choosepage:function(index){
       this.$data.currPage=index;
-      this.updatePage();
+      this.updatePagePhoto();
     },
+    //点击图片
     photoclick:function(title){
       let taga=document.getElementsByClassName('canclick')[0];
       taga.setAttribute('href','/see?title='+title);
