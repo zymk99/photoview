@@ -2,7 +2,7 @@
   <div class="fencemain">
     <a class="canclick" href="" target="_blank"></a>
     <ul class="mainul">
-      <li v-for="(item,index) in listvalue" v-bind:key="index" class="fencecell" @click="photoclick(item.title)">
+      <li v-for="(item,index) in listvalue" v-bind:key="index" class="fencecell" @click="photoclick(item.index)">
         <img :src="item.src"/>
         <span>{{item.title}}</span>
       </li>
@@ -97,9 +97,9 @@ export default {
       this.updatePagePhoto();
     },
     //点击图片
-    photoclick:function(title){
+    photoclick:function(index){
       let taga=document.getElementsByClassName('canclick')[0];
-      taga.setAttribute('href','/see?title='+title);
+      taga.setAttribute('href','/photo/see?currPageNum=1&index='+index);
       taga.click();
     }
   }
