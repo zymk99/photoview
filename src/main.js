@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import {globalData} from "./javascript/globalData";
 
 Vue.config.productionTip = false
-
+Vue.prototype.global=globalData
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -41,7 +41,7 @@ export default {
         this.$data.currPageNum=parseInt(this.$data.currPageNum)-1
         this.changeURLArg("currPageNum",this.$data.currPageNum)
       } else if (e && e.keyCode == 39) {
-        this.next()
+        this.nextP()
       }else{return;}
       if(curr == this.$data.currPageNum){
         return;
